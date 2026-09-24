@@ -26,21 +26,21 @@ A Verification represents one request to verify a customer's identity
   - Rejected
 
 ## Verification Fields
-| Field | Description |
-|---|---|
-| Id | Unique ID for the verification |
-| FirstName | Customer first name |
-| LastName | Customer last name |
-| DateOfBirth | Customer date of birth |
-| Address | Customer address |
-| Country | Customer country |
-| DocumentType | Type of identity document |
-| DocumentNumber | Document number |
-| Status | Current verification status |
-| Result | Final verification result |
-| Reason | Explanation of the verification result |
-| CreatedAt | When the verification was created |
-| CompletedAt | When the verification finished |
+| Field | Description | Who |
+|---|---|---|
+| Id | Unique ID for the verification | TrustCheck |
+| FirstName | Customer first name | Client |
+| LastName | Customer last name | Client |
+| DateOfBirth | Customer date of birth | Client |
+| Address | Customer address | Client |
+| Country | Customer country | Client |
+| DocumentType | Type of identity document | Client |
+| DocumentNumber | Document number | Client |
+| Status | Current verification status | TrustCheck |
+| Result | Final verification result | TrustCheck |
+| Reason | Explanation of the verification result | TrustCheck|
+| CreatedAt | When the verification was created | TrustCheck |
+| CompletedAt | When the verification finished | TrustCheck |
 
 ## User Journey
 I'm working at a bank;

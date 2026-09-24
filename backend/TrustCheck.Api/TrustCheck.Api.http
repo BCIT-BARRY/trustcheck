@@ -1,6 +1,59 @@
-@TrustCheck.Api_HostAddress = http://localhost:5086
+@baseUrl = http://localhost:5086
 
-GET {{TrustCheck.Api_HostAddress}}/weatherforecast/
-Accept: application/json
 
-###
+### Create verification
+
+# @name createVerification
+POST {{baseUrl}}/api/verifications
+Content-Type: application/json
+
+{
+  "firstName": "Jane",
+  "lastName": "Doe",
+  "dateOfBirth": "1995-01-01",
+  "address": "123 Fake Street",
+  "country": "Canada",
+  "documentType": "Passport",
+  "documentNumber": "TEST123"
+}
+
+
+### Get all
+
+GET {{baseUrl}}/api/verifications
+
+
+### Get by id
+
+GET {{baseUrl}}/api/verifications/{{createVerification.response.body.$.id}}
+
+
+### Run verification
+
+POST {{baseUrl}}/api/verifications/{{createVerification.response.body.$.id}}/run
+
+
+### Get result
+
+GET {{baseUrl}}/api/verifications/{{createVerification.response.body.$.id}}
+
+
+### Bad request
+
+POST {{baseUrl}}/api/verifications
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "Doe",
+  "dateOfBirth": "1995-01-01",
+  "address": "123 Fake Street",
+  "country": "Canada",
+  "documentType": "Passport",
+  "documentNumber": "TEST123"
+}
+
+
+### Not found
+
+GET {{baseUrl}}/api/verifications/00000000-0000-0000-0000-000000000001
