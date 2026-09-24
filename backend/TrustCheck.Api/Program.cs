@@ -1,4 +1,6 @@
-using TrustCheck.Api.Dtos;
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.Runtime;using TrustCheck.Api.Dtos;
 using TrustCheck.Api.Repositories;
 using TrustCheck.Api.Services;
 
@@ -7,12 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 // OpenAPI describes the HTTP API during development.
 builder.Services.AddOpenApi();
 
-// Repository abstraction.
-// For now the implementation stores data in memory.
-// DynamoDB will replace this implementation later.
+// DynamoDB client.
+// Development points to the Docker-hosted DynamoDB Local instance.
+builder.Services.AddSingleton<IAmazonDynamoDB>(_ => !string.IsNullOrWhiteSpace(builder.Configuration["DynamoDb:ServiceUrl"])
+    ? new AmazonDynamoDBClient("local", "local", new AmazonDynamoDBConfig { ServiceURL = builder.Configuration["DynamoDb:ServiceUrl"] })
+    : new AmazonDynamoDBClient(RegionEndpoint.GetBySystemName(builder.Configuration["DynamoDb:Region"] ?? "us-west-2")));
+
+// The API now persists verifications in DynamoDB instead of RAM.
 builder.Services.AddSingleton<
     IVerificationRepository,
-    InMemoryVerificationRepository>();
+    DynamoDbVerificationRepository>();
 
 // Business logic lives in the service layer.
 builder.Services.AddScoped<VerificationService>();
