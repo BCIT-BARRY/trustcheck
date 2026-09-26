@@ -1575,6 +1575,12 @@ button {
   font-size: 11px;
   line-height: 1.6;
 }
+.signup-status {
+  font-weight: 600;
+}
+.signup-status:empty {
+  display: none;
+}
 .signup-form {
   display: flex;
   align-items: flex-end;
