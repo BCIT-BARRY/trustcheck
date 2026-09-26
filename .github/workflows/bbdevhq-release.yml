@@ -1,0 +1,64 @@
+name: bbdevhq-release
+
+on:
+  push:
+    branches: [dev]
+
+concurrency: bbdevhq-release
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bbdevhq-cut:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Next version
+        id: next
+        run: echo "value=$(node scripts/bbdevhq-next-version.mjs)" >> "$GITHUB_OUTPUT"
+
+      # Opens or updates the version PR into dev; merging it applies the bump and CHANGELOG entry.
+      - uses: changesets/action@v1
+        with:
+          version: pnpm run version
+          commit: "chore(release): ${{ steps.next.outputs.value && format('cut {0} on dev', steps.next.outputs.value) || 'apply changesets on dev' }}"
+          title: "chore(release): ${{ steps.next.outputs.value && format('cut {0} on dev', steps.next.outputs.value) || 'apply changesets on dev' }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  bbdevhq-ship:
+    needs: bbdevhq-cut
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Once a cut lands on dev, keep one PR open that ships that version to main.
+      - name: Open or update the ship PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" > /dev/null; then
+            echo "$VERSION is already released; nothing to ship."
+            exit 0
+          fi
+          TITLE="chore(release): ship $VERSION to main"
+          node scripts/bbdevhq-release-notes.mjs "$VERSION" > ship-notes.md
+          EXISTING=$(gh pr list --base main --head dev --state open --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            gh pr edit "$EXISTING" --title "$TITLE" --body-file ship-notes.md
+          else
+            gh pr create --base main --head dev --title "$TITLE" --body-file ship-notes.md
+          fi

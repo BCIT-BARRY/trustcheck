@@ -1,0 +1,16 @@
+{
+  "name": "trustcheck",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@12.6.0",
+  "scripts": {
+    "changeset": "changeset",
+    "version": "node scripts/bbdevhq-version.mjs",
+    "commitlint": "commitlint --config bbdevhq-commitlint.config.cjs"
+  },
+  "devDependencies": {
+    "@changesets/cli": "3.0.3",
+    "@commitlint/cli": "21.2.3",
+    "@commitlint/config-conventional": "21.2.3"
+  }
+}
