@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-09-26
+
+### Fixed
+
+- The background worker keeps processing after one verification fails.
+
 ## [0.3.0] - 2026-09-26
 
 ### Added
@@ -47,7 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - HTTP request file for manual API testing.
 - API contract documentation.
 
-[Unreleased]: https://github.com/BCIT-BARRY/trustcheck/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/BCIT-BARRY/trustcheck/compare/0.3.1...HEAD
+[0.3.1]: https://github.com/BCIT-BARRY/trustcheck/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/BCIT-BARRY/trustcheck/compare/0.2.1...0.3.0
 [0.2.1]: https://github.com/BCIT-BARRY/trustcheck/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/BCIT-BARRY/trustcheck/compare/0.1.0...0.2.0
