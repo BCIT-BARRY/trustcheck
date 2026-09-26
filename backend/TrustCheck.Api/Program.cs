@@ -211,3 +211,5 @@ verifications.MapPost("/{id:guid}/run", async (
 
 // Starts the ASP.NET Core application.
 app.Run();
+
+public partial class Program { }
