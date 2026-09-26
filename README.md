@@ -62,3 +62,8 @@ I'm working at a bank;
 - Expand into KYB (Know your Business)
 - Anti Money Launder (AML)
 > TrustCheck uses fictional data only and is not a real identity or compliance product.
+
+---
+
+> [!IMPORTANT]
+> Operated by bbdevhq © 2026 · Mandated by bbdevhq-policy
