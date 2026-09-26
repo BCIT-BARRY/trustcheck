@@ -2,6 +2,8 @@
 // Prints one version's CHANGELOG section body, for use as GitHub Release notes.
 import { readFileSync } from "node:fs";
 
+import { FOOTER } from "./bbdevhq-footer.mjs";
+
 const version = process.argv[2];
 if (!version) {
   console.error("usage: bbdevhq-release-notes.mjs <version>");
@@ -22,4 +24,4 @@ const body =
   nextSection === -1
     ? changelog.slice(bodyStart)
     : changelog.slice(bodyStart, bodyStart + nextSection);
-console.log(body.trim());
+console.log(`${body.trim()}\n\n${FOOTER}`);

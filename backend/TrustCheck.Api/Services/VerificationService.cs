@@ -6,6 +6,13 @@ namespace TrustCheck.Api.Services;
 
 public class VerificationService
 {
+    public const int MaxNameLength = 100;
+    public const int MaxAddressLength = 200;
+    public const int MaxCountryLength = 60;
+    public const int MaxDocumentNumberLength = 30;
+
+    private static readonly DateOnly EarliestDateOfBirth = new DateOnly(1900, 1, 1);
+
     private readonly IVerificationRepository _repository;
 
     public VerificationService(IVerificationRepository repository)
@@ -27,7 +34,7 @@ public class VerificationService
             Country = request.Country.Trim(),
             DocumentType = request.DocumentType.Trim(),
             DocumentNumber = request.DocumentNumber.Trim(),
-            Status = "Submitted",
+            Status = VerificationStatus.Submitted,
             Result = null,
             Reason = null,
             CreatedAt = DateTimeOffset.UtcNow,
@@ -49,6 +56,17 @@ public class VerificationService
         return _repository.GetAllAsync();
     }
 
+    public Task<IReadOnlyList<Verification>> GetByStatusAsync(string status)
+    {
+        if (!VerificationStatus.All.Contains(status))
+        {
+            throw new ArgumentException(
+                "Status must be Submitted, Verifying or Completed.");
+        }
+
+        return _repository.GetByStatusAsync(status);
+    }
+
     public async Task<Verification?> RunAsync(Guid id)
     {
         var verification = await _repository.GetByIdAsync(id);
@@ -58,17 +76,17 @@ public class VerificationService
             return null;
         }
 
-        if (verification.Status == "Verifying")
+        if (verification.Status == VerificationStatus.Verifying)
         {
             throw new InvalidOperationException("verification_in_progress");
         }
 
-        if (verification.Status == "Completed")
+        if (verification.Status == VerificationStatus.Completed)
         {
             throw new InvalidOperationException("verification_already_completed");
         }
 
-        verification.Status = "Verifying";
+        verification.Status = VerificationStatus.Verifying;
 
         await _repository.UpdateAsync(verification);
 
@@ -79,7 +97,7 @@ public class VerificationService
     {
         var verification = await _repository.GetByIdAsync(id);
 
-        if (verification is null || verification.Status != "Verifying")
+        if (verification is null || verification.Status != VerificationStatus.Verifying)
         {
             return;
         }
@@ -88,8 +106,8 @@ public class VerificationService
         // Test document numbers ending in 0 are rejected; everything else verifies.
         var verified = !verification.DocumentNumber.EndsWith("0");
 
-        verification.Status = "Completed";
-        verification.Result = verified ? "Verified" : "Rejected";
+        verification.Status = VerificationStatus.Completed;
+        verification.Result = verified ? VerificationResult.Verified : VerificationResult.Rejected;
         verification.Reason = verified
             ? "Identity passed the TrustCheck demo verification rules."
             : "Document number failed the TrustCheck demo verification rule.";
@@ -112,6 +130,36 @@ public class VerificationService
         if (request.DateOfBirth > DateOnly.FromDateTime(DateTime.UtcNow))
         {
             throw new ArgumentException("Date of birth cannot be in the future.");
+        }
+
+        if (request.DateOfBirth < EarliestDateOfBirth)
+        {
+            throw new ArgumentException("Date of birth cannot be before 1900.");
+        }
+
+        if (request.FirstName.Trim().Length > MaxNameLength ||
+            request.LastName.Trim().Length > MaxNameLength)
+        {
+            throw new ArgumentException(
+                $"Names cannot be longer than {MaxNameLength} characters.");
+        }
+
+        if (request.Address.Trim().Length > MaxAddressLength)
+        {
+            throw new ArgumentException(
+                $"Address cannot be longer than {MaxAddressLength} characters.");
+        }
+
+        if (request.Country.Trim().Length > MaxCountryLength)
+        {
+            throw new ArgumentException(
+                $"Country cannot be longer than {MaxCountryLength} characters.");
+        }
+
+        if (request.DocumentNumber.Trim().Length > MaxDocumentNumberLength)
+        {
+            throw new ArgumentException(
+                $"Document number cannot be longer than {MaxDocumentNumberLength} characters.");
         }
 
         if (request.DocumentType is not "Passport" and not "DriverLicence")

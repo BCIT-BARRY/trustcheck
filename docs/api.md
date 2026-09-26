@@ -102,26 +102,28 @@ Current MVP rules:
 
 ```text
 FirstName
-→ required and cannot be empty
+→ required, at most 100 characters
 
 LastName
-→ required and cannot be empty
+→ required, at most 100 characters
 
 DateOfBirth
-→ required and cannot be in the future
+→ required, not in the future, not before 1900
 
 Address
-→ required and cannot be empty
+→ required, at most 200 characters
 
 Country
-→ required and cannot be empty
+→ required, at most 60 characters
 
 DocumentType
 → required and must be Passport or DriverLicence
 
 DocumentNumber
-→ required and cannot be empty
+→ required, at most 30 characters
 ```
+
+Lengths are measured after surrounding spaces are trimmed.
 
 Example:
 
@@ -228,6 +230,27 @@ An empty collection is not an API error. The frontend may display an empty state
 
 ```text
 No verifications yet.
+```
+
+## Filter by Status
+
+```http
+GET /api/verifications?status=Submitted
+```
+
+`status` is optional. Allowed values are `Submitted`, `Verifying` and `Completed`.
+
+Any other value returns:
+
+```http
+400 Bad Request
+```
+
+```json
+{
+  "code": "validation_error",
+  "message": "Status must be Submitted, Verifying or Completed."
+}
 ```
 
 ---
