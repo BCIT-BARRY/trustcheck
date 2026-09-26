@@ -27,7 +27,7 @@ public class VerificationService
             Country = request.Country.Trim(),
             DocumentType = request.DocumentType.Trim(),
             DocumentNumber = request.DocumentNumber.Trim(),
-            Status = "Submitted",
+            Status = VerificationStatus.Submitted,
             Result = null,
             Reason = null,
             CreatedAt = DateTimeOffset.UtcNow,
@@ -49,6 +49,17 @@ public class VerificationService
         return _repository.GetAllAsync();
     }
 
+    public Task<IReadOnlyList<Verification>> GetByStatusAsync(string status)
+    {
+        if (!VerificationStatus.All.Contains(status))
+        {
+            throw new ArgumentException(
+                "Status must be Submitted, Verifying or Completed.");
+        }
+
+        return _repository.GetByStatusAsync(status);
+    }
+
     public async Task<Verification?> RunAsync(Guid id)
     {
         var verification = await _repository.GetByIdAsync(id);
@@ -58,17 +69,17 @@ public class VerificationService
             return null;
         }
 
-        if (verification.Status == "Verifying")
+        if (verification.Status == VerificationStatus.Verifying)
         {
             throw new InvalidOperationException("verification_in_progress");
         }
 
-        if (verification.Status == "Completed")
+        if (verification.Status == VerificationStatus.Completed)
         {
             throw new InvalidOperationException("verification_already_completed");
         }
 
-        verification.Status = "Verifying";
+        verification.Status = VerificationStatus.Verifying;
 
         await _repository.UpdateAsync(verification);
 
@@ -79,7 +90,7 @@ public class VerificationService
     {
         var verification = await _repository.GetByIdAsync(id);
 
-        if (verification is null || verification.Status != "Verifying")
+        if (verification is null || verification.Status != VerificationStatus.Verifying)
         {
             return;
         }
@@ -88,8 +99,8 @@ public class VerificationService
         // Test document numbers ending in 0 are rejected; everything else verifies.
         var verified = !verification.DocumentNumber.EndsWith("0");
 
-        verification.Status = "Completed";
-        verification.Result = verified ? "Verified" : "Rejected";
+        verification.Status = VerificationStatus.Completed;
+        verification.Result = verified ? VerificationResult.Verified : VerificationResult.Rejected;
         verification.Reason = verified
             ? "Identity passed the TrustCheck demo verification rules."
             : "Document number failed the TrustCheck demo verification rule.";

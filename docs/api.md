@@ -230,6 +230,27 @@ An empty collection is not an API error. The frontend may display an empty state
 No verifications yet.
 ```
 
+## Filter by Status
+
+```http
+GET /api/verifications?status=Submitted
+```
+
+`status` is optional. Allowed values are `Submitted`, `Verifying` and `Completed`.
+
+Any other value returns:
+
+```http
+400 Bad Request
+```
+
+```json
+{
+  "code": "validation_error",
+  "message": "Status must be Submitted, Verifying or Completed."
+}
+```
+
 ---
 
 # POST /api/verifications/{id}/run

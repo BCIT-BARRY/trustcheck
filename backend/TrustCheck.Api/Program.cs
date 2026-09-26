@@ -1,6 +1,7 @@
 using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.Runtime;using TrustCheck.Api.Dtos;
+using TrustCheck.Api.Models;
 using TrustCheck.Api.Repositories;
 using TrustCheck.Api.Services;
 
@@ -78,10 +79,27 @@ verifications.MapPost("/", async (
 
 // READ ALL
 // GET /api/verifications
+// GET /api/verifications?status=Submitted
 verifications.MapGet("/", async (
+    string? status,
     VerificationService service) =>
 {
-    var items = await service.GetAllAsync();
+    IReadOnlyList<Verification> items;
+
+    try
+    {
+        items = string.IsNullOrWhiteSpace(status)
+            ? await service.GetAllAsync()
+            : await service.GetByStatusAsync(status);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new ApiErrorResponse
+        {
+            Code = "validation_error",
+            Message = ex.Message
+        });
+    }
 
     var response = items.Select(verification =>
         new VerificationSummaryResponse
