@@ -1,13 +1,11 @@
 # Local Development
 
-How I run TrustCheck on my machine.
-
-## What you need
+## Requirements
 
 * .NET 10 SDK
-* Docker (for DynamoDB Local)
-* AWS CLI (only used to create the table and load test data)
-* Node.js 22 and pnpm (only for the release scripts)
+* Docker
+* AWS CLI
+* Node.js 22 and pnpm (release scripts only)
 
 ## 1. Start DynamoDB Local
 
@@ -15,11 +13,11 @@ How I run TrustCheck on my machine.
 docker run -p 8000:8000 amazon/dynamodb-local
 ```
 
-The API talks to it through `DynamoDb:ServiceUrl` in `appsettings.Development.json` (`http://localhost:8000`).
+`appsettings.Development.json` points the API at `http://localhost:8000`.
 
 ## 2. Create the table
 
-The table is called `Verifications`. `Id` is the key, and `Status-CreatedAt-index` lets the API look up verifications by status.
+`Verifications` uses `Id` as its key. `Status-CreatedAt-index` serves lookups by status.
 
 ```bash
 aws dynamodb create-table \
@@ -31,9 +29,9 @@ aws dynamodb create-table \
   --endpoint-url http://localhost:8000
 ```
 
-DynamoDB Local accepts any credentials, so `aws configure` with fake values is fine.
+DynamoDB Local accepts any credentials.
 
-## 3. Load the test data (optional)
+## 3. Load seed data
 
 ```bash
 aws dynamodb batch-write-item \
@@ -47,7 +45,7 @@ aws dynamodb batch-write-item \
 dotnet run --project backend/TrustCheck.Api
 ```
 
-It listens on `http://localhost:5086`. `backend/TrustCheck.Api/TrustCheck.Api.http` has ready requests for every endpoint.
+The API listens on `http://localhost:5086`. `backend/TrustCheck.Api/TrustCheck.Api.http` holds a request for every endpoint.
 
 ## 5. Run the tests
 
@@ -55,10 +53,10 @@ It listens on `http://localhost:5086`. `backend/TrustCheck.Api/TrustCheck.Api.ht
 dotnet test trustcheck.sln
 ```
 
-The tests use the in memory repository, so they do not need Docker.
+Tests use the in memory repository and do not require Docker.
 
-## Useful notes
+## Rules
 
-* Document numbers ending in `0` are rejected by the demo verification rule. Everything else is verified.
-* A verification only moves from `Submitted` to `Verifying` when you call `POST /api/verifications/{id}/run`. The background worker finishes it about one second later.
-* The landing page in `frontend/` is plain HTML, CSS and JavaScript. Open `frontend/index.html` in a browser, or serve the folder with any static server.
+* Document numbers ending in `0` are rejected. All others are verified.
+* `POST /api/verifications/{id}/run` moves a verification from `Submitted` to `Verifying`. The background worker completes it after one second.
+* `frontend/` is static HTML, CSS and JavaScript served from any static server.
