@@ -140,6 +140,27 @@ Example:
 
 ---
 
+# GET /api/verifications/counts
+
+Returns the number of Verifications in each status and result.
+
+```http
+200 OK
+```
+
+```json
+{
+  "total": 4,
+  "submitted": 1,
+  "verifying": 1,
+  "completed": 2,
+  "verified": 1,
+  "rejected": 1
+}
+```
+
+---
+
 # GET /api/verifications/{id}
 
 Returns one complete Verification.

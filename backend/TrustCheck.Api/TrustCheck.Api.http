@@ -28,6 +28,11 @@ GET {{baseUrl}}/api/verifications
 GET {{baseUrl}}/api/verifications?status=Submitted
 
 
+### Get counts
+
+GET {{baseUrl}}/api/verifications/counts
+
+
 ### Get by id
 
 GET {{baseUrl}}/api/verifications/{{createVerification.response.body.$.id}}

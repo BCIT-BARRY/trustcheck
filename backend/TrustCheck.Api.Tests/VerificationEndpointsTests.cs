@@ -115,6 +115,21 @@ public class VerificationEndpointsTests : IClassFixture<TrustCheckApiFactory>
     }
 
     [Fact]
+    public async Task Get_Counts_IncludesNewVerification()
+    {
+        var before = await _client.GetFromJsonAsync<VerificationCountsResponse>("/api/verifications/counts");
+
+        await _client.PostAsJsonAsync("/api/verifications", ValidRequest());
+
+        var after = await _client.GetFromJsonAsync<VerificationCountsResponse>("/api/verifications/counts");
+
+        Assert.NotNull(before);
+        Assert.NotNull(after);
+        Assert.Equal(before!.Total + 1, after!.Total);
+        Assert.Equal(before.Submitted + 1, after.Submitted);
+    }
+
+    [Fact]
     public async Task Get_ById_ExistingId_ReturnsMatchingNames()
     {
         var request = ValidRequest();
