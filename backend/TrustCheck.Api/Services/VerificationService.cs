@@ -49,6 +49,17 @@ public class VerificationService
         return _repository.GetAllAsync();
     }
 
+    public Task<IReadOnlyList<Verification>> GetByStatusAsync(string status)
+    {
+        if (!VerificationStatus.All.Contains(status))
+        {
+            throw new ArgumentException(
+                "Status must be Submitted, Verifying or Completed.");
+        }
+
+        return _repository.GetByStatusAsync(status);
+    }
+
     public async Task<Verification?> RunAsync(Guid id)
     {
         var verification = await _repository.GetByIdAsync(id);
