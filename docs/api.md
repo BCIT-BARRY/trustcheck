@@ -102,26 +102,28 @@ Current MVP rules:
 
 ```text
 FirstName
-→ required and cannot be empty
+→ required, at most 100 characters
 
 LastName
-→ required and cannot be empty
+→ required, at most 100 characters
 
 DateOfBirth
-→ required and cannot be in the future
+→ required, not in the future, not before 1900
 
 Address
-→ required and cannot be empty
+→ required, at most 200 characters
 
 Country
-→ required and cannot be empty
+→ required, at most 60 characters
 
 DocumentType
 → required and must be Passport or DriverLicence
 
 DocumentNumber
-→ required and cannot be empty
+→ required, at most 30 characters
 ```
+
+Lengths are measured after surrounding spaces are trimmed.
 
 Example:
 
