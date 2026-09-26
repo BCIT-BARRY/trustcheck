@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+> [!IMPORTANT]
+> Operated by bbdevhq © 2026 · Mandated by bbdevhq-policy
+
 ## [Unreleased]
 
 ## [0.2.1] - 2026-09-26
@@ -37,5 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - HTTP request file for manual API testing.
 - API contract documentation.
 
-[Unreleased]: https://github.com/BCIT-BARRY/trustcheck/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/BCIT-BARRY/trustcheck/compare/0.2.1...HEAD
+[0.2.1]: https://github.com/BCIT-BARRY/trustcheck/compare/0.2.0...0.2.1
+[0.2.0]: https://github.com/BCIT-BARRY/trustcheck/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/BCIT-BARRY/trustcheck/releases/tag/0.1.0

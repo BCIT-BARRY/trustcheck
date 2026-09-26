@@ -37,7 +37,13 @@ const formatted = entry
 
 const firstRelease = before.search(/^## \[\d/m);
 const insertAt = firstRelease === -1 ? before.length : firstRelease;
-const updated = `${before.slice(0, insertAt)}${formatted}\n\n${before.slice(insertAt)}`;
+const withEntry = `${before.slice(0, insertAt)}${formatted}\n\n${before.slice(insertAt)}`;
+const version = formatted.match(/^## \[([^\]]+)\]/)[1];
+const updated = withEntry.replace(
+  /^\[Unreleased\]: (.+)\/compare\/(.+)\.\.\.HEAD$/m,
+  (_, repo, previous) =>
+    `[Unreleased]: ${repo}/compare/${version}...HEAD\n[${version}]: ${repo}/compare/${previous}...${version}`,
+);
 
 writeFileSync(CHANGELOG, updated);
 console.log(`CHANGELOG.md updated with ${formatted.split("\n")[0]}`);
