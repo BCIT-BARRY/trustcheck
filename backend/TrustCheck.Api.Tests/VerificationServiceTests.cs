@@ -220,6 +220,44 @@ public class VerificationServiceTests
     }
 
     [Fact]
+    public async Task GetCountsAsync_NoVerifications_ReturnsZeros()
+    {
+        var counts = await _service.GetCountsAsync();
+
+        Assert.Equal(0, counts.Total);
+        Assert.Equal(0, counts.Submitted);
+        Assert.Equal(0, counts.Verified);
+    }
+
+    [Fact]
+    public async Task GetCountsAsync_CountsEachStatusAndResult()
+    {
+        await _service.CreateAsync(ValidRequest());
+
+        var running = await _service.CreateAsync(ValidRequest());
+        await _service.RunAsync(running.Id);
+
+        var verified = await _service.CreateAsync(ValidRequest());
+        await _service.RunAsync(verified.Id);
+        await _service.CompleteAsync(verified.Id);
+
+        var rejectedRequest = ValidRequest();
+        rejectedRequest.DocumentNumber = "AB123450";
+        var rejected = await _service.CreateAsync(rejectedRequest);
+        await _service.RunAsync(rejected.Id);
+        await _service.CompleteAsync(rejected.Id);
+
+        var counts = await _service.GetCountsAsync();
+
+        Assert.Equal(4, counts.Total);
+        Assert.Equal(1, counts.Submitted);
+        Assert.Equal(1, counts.Verifying);
+        Assert.Equal(2, counts.Completed);
+        Assert.Equal(1, counts.Verified);
+        Assert.Equal(1, counts.Rejected);
+    }
+
+    [Fact]
     public async Task RunAsync_UnknownId_ReturnsNull()
     {
         var result = await _service.RunAsync(Guid.NewGuid());
