@@ -102,6 +102,25 @@ public class VerificationServiceTests
     }
 
     [Fact]
+    public async Task GetByStatusAsync_ReturnsOnlyThatStatus()
+    {
+        var first = await _service.CreateAsync(ValidRequest());
+        await _service.CreateAsync(ValidRequest());
+        await _service.RunAsync(first.Id);
+
+        var verifying = await _service.GetByStatusAsync("Verifying");
+
+        Assert.Single(verifying);
+        Assert.Equal(first.Id, verifying[0].Id);
+    }
+
+    [Fact]
+    public async Task GetByStatusAsync_UnknownStatus_Throws()
+    {
+        await Assert.ThrowsAsync<ArgumentException>(() => _service.GetByStatusAsync("Pending"));
+    }
+
+    [Fact]
     public async Task RunAsync_UnknownId_ReturnsNull()
     {
         var result = await _service.RunAsync(Guid.NewGuid());
