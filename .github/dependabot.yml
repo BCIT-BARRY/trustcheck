@@ -1,0 +1,13 @@
+# Weekly GitHub Actions updates, grouped into one PR against dev.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ["*"]
