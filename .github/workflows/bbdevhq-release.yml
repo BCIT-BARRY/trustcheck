@@ -22,18 +22,32 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
 
-      - name: Next version
-        id: next
-        run: echo "value=$(node scripts/bbdevhq-next-version.mjs)" >> "$GITHUB_OUTPUT"
-
-      # Opens or updates the version PR into dev; merging it applies the bump and CHANGELOG entry.
-      - uses: changesets/action@v1
-        with:
-          version: pnpm run version
-          commit: "chore(release): ${{ steps.next.outputs.value && format('cut {0} on dev', steps.next.outputs.value) || 'apply changesets on dev' }}"
-          title: "chore(release): ${{ steps.next.outputs.value && format('cut {0} on dev', steps.next.outputs.value) || 'apply changesets on dev' }}"
+      # Empty changesets never bump the version; they are consumed by the next real cut.
+      - name: Open or update the cut PR
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BEFORE=$(node -p "require('./package.json').version")
+          pnpm run version
+          VERSION=$(node -p "require('./package.json').version")
+          if [ "$VERSION" = "$BEFORE" ]; then
+            echo "No version bump pending; nothing to cut."
+            exit 0
+          fi
+          TITLE="chore(release): cut $VERSION on dev"
+          BRANCH=changeset-release/dev
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$BRANCH"
+          git commit -am "$TITLE"
+          git push --force origin "$BRANCH"
+          node scripts/bbdevhq-pr-body.mjs cut "$VERSION" > cut-body.md
+          EXISTING=$(gh pr list --base dev --head "$BRANCH" --state open --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            gh pr edit "$EXISTING" --title "$TITLE" --body-file cut-body.md
+          else
+            gh pr create --base dev --head "$BRANCH" --title "$TITLE" --body-file cut-body.md
+          fi
 
   bbdevhq-ship:
     needs: bbdevhq-cut
@@ -55,10 +69,11 @@ jobs:
             exit 0
           fi
           TITLE="chore(release): ship $VERSION to main"
-          node scripts/bbdevhq-release-notes.mjs "$VERSION" > ship-notes.md
+          RELEASED=$(gh release view --json tagName --jq .tagName 2>/dev/null || true)
+          node scripts/bbdevhq-pr-body.mjs ship "$VERSION" "$RELEASED" > ship-body.md
           EXISTING=$(gh pr list --base main --head dev --state open --json number --jq '.[0].number')
           if [ -n "$EXISTING" ]; then
-            gh pr edit "$EXISTING" --title "$TITLE" --body-file ship-notes.md
+            gh pr edit "$EXISTING" --title "$TITLE" --body-file ship-body.md
           else
-            gh pr create --base main --head dev --title "$TITLE" --body-file ship-notes.md
+            gh pr create --base main --head dev --title "$TITLE" --body-file ship-body.md
           fi
