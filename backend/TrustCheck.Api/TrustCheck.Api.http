@@ -23,6 +23,11 @@ Content-Type: application/json
 GET {{baseUrl}}/api/verifications
 
 
+### Get by status
+
+GET {{baseUrl}}/api/verifications?status=Submitted
+
+
 ### Get by id
 
 GET {{baseUrl}}/api/verifications/{{createVerification.response.body.$.id}}
