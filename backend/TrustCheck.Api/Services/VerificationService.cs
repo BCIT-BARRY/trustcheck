@@ -56,6 +56,43 @@ public class VerificationService
         return _repository.GetAllAsync();
     }
 
+    public async Task<VerificationCountsResponse> GetCountsAsync()
+    {
+        var verifications = await _repository.GetAllAsync();
+
+        var counts = new VerificationCountsResponse
+        {
+            Total = verifications.Count
+        };
+
+        foreach (var verification in verifications)
+        {
+            if (verification.Status == VerificationStatus.Submitted)
+            {
+                counts.Submitted++;
+            }
+            else if (verification.Status == VerificationStatus.Verifying)
+            {
+                counts.Verifying++;
+            }
+            else if (verification.Status == VerificationStatus.Completed)
+            {
+                counts.Completed++;
+            }
+
+            if (verification.Result == VerificationResult.Verified)
+            {
+                counts.Verified++;
+            }
+            else if (verification.Result == VerificationResult.Rejected)
+            {
+                counts.Rejected++;
+            }
+        }
+
+        return counts;
+    }
+
     public Task<IReadOnlyList<Verification>> GetByStatusAsync(string status)
     {
         if (!VerificationStatus.All.Contains(status))

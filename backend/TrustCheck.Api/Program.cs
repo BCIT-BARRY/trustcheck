@@ -116,6 +116,17 @@ verifications.MapGet("/", async (
 });
 
 
+// COUNTS
+// GET /api/verifications/counts
+verifications.MapGet("/counts", async (
+    VerificationService service) =>
+{
+    var counts = await service.GetCountsAsync();
+
+    return Results.Ok(counts);
+});
+
+
 // READ ONE
 // GET /api/verifications/{id}
 verifications.MapGet("/{id:guid}", async (
