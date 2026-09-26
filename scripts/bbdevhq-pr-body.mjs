@@ -2,6 +2,8 @@
 // Prints the cut or ship pull request body from CHANGELOG sections.
 import { readFileSync } from "node:fs";
 
+import { FOOTER } from "./bbdevhq-footer.mjs";
+
 const [kind, version, released] = process.argv.slice(2);
 if (!["cut", "ship"].includes(kind) || !version) {
   console.error("usage: bbdevhq-pr-body.mjs <cut|ship> <version> [released-version]");
@@ -38,5 +40,6 @@ console.log(
     ...changes,
     "## Test plan",
     "- [x] bbdevhq-policy on this PR gates the merge.",
+    FOOTER,
   ].join("\n\n"),
 );
