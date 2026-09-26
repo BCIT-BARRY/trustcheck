@@ -86,6 +86,35 @@ public class VerificationEndpointsTests : IClassFixture<TrustCheckApiFactory>
     }
 
     [Fact]
+    public async Task Get_ByStatus_ReturnsOnlyThatStatus()
+    {
+        var created = await _client.PostAsJsonAsync("/api/verifications", ValidRequest());
+        var createdBody = await created.Content.ReadFromJsonAsync<CreateVerificationResponse>();
+        await _client.PostAsync($"/api/verifications/{createdBody!.Id}/run", null);
+
+        var response = await _client.GetAsync("/api/verifications?status=Submitted");
+        var items = await response.Content.ReadFromJsonAsync<List<VerificationSummaryResponse>>();
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.NotNull(items);
+        Assert.All(items!, item => Assert.Equal("Submitted", item.Status));
+        Assert.DoesNotContain(items!, item => item.Id == createdBody.Id);
+    }
+
+    [Fact]
+    public async Task Get_ByUnknownStatus_Returns400()
+    {
+        var response = await _client.GetAsync("/api/verifications?status=Pending");
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var body = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+
+        Assert.NotNull(body);
+        Assert.Equal("validation_error", body!.Code);
+    }
+
+    [Fact]
     public async Task Get_ById_ExistingId_ReturnsMatchingNames()
     {
         var request = ValidRequest();
