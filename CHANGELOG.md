@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-26
+
+### Added
+
+- Static TrustCheck landing page, deployed on Vercel.
+
 ## [0.1.0] - 2026-09-24
 
 ### Added
