@@ -6,7 +6,8 @@
   "scripts": {
     "changeset": "changeset",
     "version": "node scripts/bbdevhq-version.mjs",
-    "commitlint": "commitlint --config bbdevhq-commitlint.config.cjs"
+    "commitlint": "commitlint --config bbdevhq-commitlint.config.cjs",
+    "test": "node --test \"scripts/*.test.mjs\""
   },
   "devDependencies": {
     "@changesets/cli": "3.0.3",

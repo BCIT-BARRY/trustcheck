@@ -24,6 +24,9 @@ jobs:
       - name: Conventional commits
         run: pnpm commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
+      - name: Script tests
+        run: pnpm test
+
       - name: Changeset present
         if: github.base_ref == 'dev' && !startsWith(github.head_ref, 'changeset-release/')
         run: node scripts/bbdevhq-changeset-required.mjs ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
