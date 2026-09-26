@@ -6,6 +6,13 @@ namespace TrustCheck.Api.Services;
 
 public class VerificationService
 {
+    public const int MaxNameLength = 100;
+    public const int MaxAddressLength = 200;
+    public const int MaxCountryLength = 60;
+    public const int MaxDocumentNumberLength = 30;
+
+    private static readonly DateOnly EarliestDateOfBirth = new DateOnly(1900, 1, 1);
+
     private readonly IVerificationRepository _repository;
 
     public VerificationService(IVerificationRepository repository)
@@ -123,6 +130,36 @@ public class VerificationService
         if (request.DateOfBirth > DateOnly.FromDateTime(DateTime.UtcNow))
         {
             throw new ArgumentException("Date of birth cannot be in the future.");
+        }
+
+        if (request.DateOfBirth < EarliestDateOfBirth)
+        {
+            throw new ArgumentException("Date of birth cannot be before 1900.");
+        }
+
+        if (request.FirstName.Trim().Length > MaxNameLength ||
+            request.LastName.Trim().Length > MaxNameLength)
+        {
+            throw new ArgumentException(
+                $"Names cannot be longer than {MaxNameLength} characters.");
+        }
+
+        if (request.Address.Trim().Length > MaxAddressLength)
+        {
+            throw new ArgumentException(
+                $"Address cannot be longer than {MaxAddressLength} characters.");
+        }
+
+        if (request.Country.Trim().Length > MaxCountryLength)
+        {
+            throw new ArgumentException(
+                $"Country cannot be longer than {MaxCountryLength} characters.");
+        }
+
+        if (request.DocumentNumber.Trim().Length > MaxDocumentNumberLength)
+        {
+            throw new ArgumentException(
+                $"Document number cannot be longer than {MaxDocumentNumberLength} characters.");
         }
 
         if (request.DocumentType is not "Passport" and not "DriverLicence")
