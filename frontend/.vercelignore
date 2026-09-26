@@ -1,0 +1,5 @@
+.env*
+.vercel
+.prettierrc.json
+.htmlvalidate.json
+biome.json

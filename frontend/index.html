@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>TrustCheck | Identity Verification</title>
+    <meta
+      name="description"
+      content="Identity verification built in British Columbia. Submit an ID, track every status, and get a clear result with a reason. By Barry Bui."
+    />
+    <meta name="author" content="Barry Bui" />
+    <meta name="theme-color" content="#864d30" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="TrustCheck" />
+    <meta property="og:title" content="TrustCheck | Make Smarter Calls On Every Identity" />
+    <meta
+      property="og:description"
+      content="Identity verification built in British Columbia. Submit an ID, track every status, get a clear result."
+    />
+    <meta property="og:url" content="https://trustcheck-ca.vercel.app/" />
+    <meta property="og:image" content="https://trustcheck-ca.vercel.app/assets/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="TrustCheck landing page: Make Smarter Calls On Every Identity, with a hand holding a verified TrustCheck card."
+    />
+    <meta property="og:locale" content="en_CA" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="TrustCheck | Make Smarter Calls On Every Identity" />
+    <meta
+      name="twitter:description"
+      content="Identity verification built in British Columbia. Submit an ID, track every status, get a clear result."
+    />
+    <meta name="twitter:image" content="https://trustcheck-ca.vercel.app/assets/og-image.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,700&display=swap"
+    />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="main.js"></script>
+    <script type="module" src="effects.js"></script>
+  </head>
+  <body>
+    <svg width="0" height="0" aria-hidden="true" class="sprite">
+      <symbol id="logo" viewBox="0 0 32 32"><path d="M2 8h26l-11 18-5-8 4-5H8l-3 5z" fill="currentColor" /></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24">
+        <path
+          d="M4 10.5 12 4l8 6.5V20h-5v-6H9v6H4z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9.2" fill="none" stroke="currentColor" stroke-width="1.6" />
+        <path
+          d="m8.5 12.2 2.4 2.4 4.6-4.8"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-arrow-ur" viewBox="0 0 24 24">
+        <path
+          d="M7 17 17 7M9 7h8v8"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-arrow-r" viewBox="0 0 24 24">
+        <path
+          d="M4 12h16m-6-6 6 6-6 6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-arrow-l" viewBox="0 0 24 24">
+        <path
+          d="M20 12H4m6-6-6 6 6 6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <path d="M12 11v5M12 8v.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      </symbol>
+      <symbol id="i-cal" viewBox="0 0 24 24">
+        <rect x="4" y="5" width="16" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <path
+          d="M4 10h16M9 3v4M15 3v4M8 13h1M11.5 13h1M15 13h1M8 16.5h1M11.5 16.5h1M15 16.5h1"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        />
+      </symbol>
+      <symbol id="i-kebab" viewBox="0 0 24 24">
+        <circle cx="12" cy="5" r="1.8" fill="currentColor" />
+        <circle cx="12" cy="12" r="1.8" fill="currentColor" />
+        <circle cx="12" cy="19" r="1.8" fill="currentColor" />
+      </symbol>
+      <symbol id="i-cloud" viewBox="0 0 24 24">
+        <path
+          d="M7.5 17.5H7a4.5 4.5 0 0 1-.6-9 5.5 5.5 0 0 1 10.6 1.4A3.8 3.8 0 0 1 16.8 17.5h-.3"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+        />
+        <path
+          d="M12 11.5v9m-3-3 3 3 3-3"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-filter" viewBox="0 0 24 24">
+        <path
+          d="M4 5h16l-6 7.5V19l-4-2v-4.5z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-bars" viewBox="0 0 24 24">
+        <rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.6" />
+        <path d="M8.5 16v-3M12 16V9M15.5 16v-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </symbol>
+      <symbol id="i-board" viewBox="0 0 24 24">
+        <rect x="3.5" y="4" width="17" height="11.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <path
+          d="m7 12 3-3 2.5 2 4-4M8 20l2-4.5M16 20l-2-4.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-updown" viewBox="0 0 24 24">
+        <path
+          d="m8 9 4-4 4 4M8 15l4 4 4-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path
+          d="m6 12.5 4 4 8-9"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-passport" viewBox="0 0 24 24">
+        <rect x="5" y="2.5" width="14" height="19" rx="2" fill="none" stroke="currentColor" stroke-width="1.6" />
+        <circle cx="12" cy="10.5" r="3.4" fill="none" stroke="currentColor" stroke-width="1.4" />
+        <path
+          d="M8.6 10.5h6.8M12 7.1c1.2 1 1.2 5.8 0 6.8M12 7.1c-1.2 1-1.2 5.8 0 6.8M9 17.5h6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.2"
+          stroke-linecap="round"
+        />
+      </symbol>
+      <symbol id="i-licence" viewBox="0 0 24 24">
+        <rect x="2.5" y="5" width="19" height="14" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.6" />
+        <circle cx="8" cy="11" r="2.1" fill="none" stroke="currentColor" stroke-width="1.4" />
+        <path
+          d="M5 16c.5-1.6 1.6-2.4 3-2.4s2.5.8 3 2.4M13.5 9.5h5M13.5 12.5h5M13.5 15.5h3"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.4"
+          stroke-linecap="round"
+        />
+      </symbol>
+      <symbol id="i-star" viewBox="0 0 24 24">
+        <path d="m12 2.5 2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.7l7.1-.6z" fill="currentColor" />
+      </symbol>
+      <symbol id="i-people" viewBox="0 0 24 24">
+        <circle cx="8.5" cy="8" r="3.5" fill="currentColor" />
+        <circle cx="16.5" cy="8.5" r="3" fill="currentColor" />
+        <path
+          d="M1.5 19.5c.5-4 3.4-6 7-6s6.5 2 7 6zM15.5 13.6c3.4-.3 6.3 1.4 7 5.9h-5.3c-.2-2.4-.8-4.3-1.7-5.9z"
+          fill="currentColor"
+        />
+      </symbol>
+      <symbol id="i-impact" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9.5" fill="currentColor" />
+        <circle cx="12" cy="12" r="3.3" fill="none" stroke="#975b41" stroke-width="2" />
+        <path
+          d="M12 2.5v6M12 15.5v6M2.5 12h6M15.5 12h6"
+          stroke="#975b41"
+          stroke-width="2.2"
+          transform="rotate(45 12 12)"
+        />
+      </symbol>
+      <symbol id="i-cols" viewBox="0 0 24 24">
+        <rect x="3" y="3.5" width="4.5" height="17" rx="1" fill="currentColor" />
+        <rect x="9.8" y="3.5" width="4.5" height="17" rx="1" fill="currentColor" />
+        <rect x="16.5" y="3.5" width="4.5" height="17" rx="1" fill="currentColor" />
+      </symbol>
+      <symbol id="i-fb" viewBox="0 0 24 24">
+        <path
+          d="M12 2a10 10 0 0 0-1.6 19.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.5 2.9h-2.3v7A10 10 0 0 0 12 2z"
+          fill="currentColor"
+        />
+      </symbol>
+      <symbol id="i-tw" viewBox="0 0 24 24">
+        <path
+          d="M22 5.9c-.7.3-1.5.5-2.4.6.9-.5 1.5-1.3 1.8-2.3-.8.5-1.7.8-2.6 1a4.1 4.1 0 0 0-7 3.7A11.6 11.6 0 0 1 3.4 4.6a4.1 4.1 0 0 0 1.3 5.5c-.7 0-1.3-.2-1.9-.5 0 2 1.4 3.7 3.3 4.1-.6.2-1.2.2-1.9.1.5 1.6 2 2.8 3.8 2.9A8.2 8.2 0 0 1 2 18.3 11.6 11.6 0 0 0 8.3 20c7.5 0 11.7-6.3 11.7-11.7v-.5c.8-.6 1.5-1.3 2-2.1z"
+          fill="currentColor"
+        />
+      </symbol>
+      <symbol id="i-ig" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <circle cx="17.3" cy="6.7" r="1.2" fill="currentColor" />
+      </symbol>
+      <symbol id="i-in" viewBox="0 0 24 24">
+        <rect x="2.5" y="2.5" width="19" height="19" rx="2.5" fill="currentColor" />
+        <path
+          d="M7 10v7M7 7v.01M11 17v-7M11 13.2c0-1.9 1-3.2 2.8-3.2 1.7 0 2.7 1.1 2.7 3.2V17"
+          stroke="#fdf8f4"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </symbol>
+    </svg>
+
+    <div class="page">
+      <header class="site-header">
+        <a class="brand" href="#top" aria-label="TrustCheck home"
+          ><svg class="brand-mark" aria-hidden="true"><use href="#logo" /></svg><span>trustcheck</span></a
+        >
+        <nav aria-label="Primary">
+          <ul class="nav-pill">
+            <li>
+              <a class="is-active" href="#top" aria-current="location"
+                ><svg aria-hidden="true"><use href="#i-home" /></svg>Home</a
+              >
+            </li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#procedures">Procedures</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a class="btn-signin" href="#signin">Sign In</a>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <img class="dots dots-left" src="assets/dots-brown.svg" alt="" />
+          <img class="dots dots-right" src="assets/dots-brown.svg" alt="" />
+
+          <p class="users-pill">
+            <span class="avatars" aria-hidden="true"
+              ><i
+                ><svg><use href="#i-check" /></svg></i
+              ><i
+                ><svg><use href="#i-check" /></svg></i
+              ><i
+                ><svg><use href="#i-check" /></svg></i></span
+            ><b class="odometer" data-odometer>12,480</b> British Columbians Verified This Week
+          </p>
+          <h1 id="hero-title" class="hero-title">
+            <span class="line"><span class="text-strong">Make Smarter</span> <span class="text-soft">Calls</span></span>
+            <span class="line"
+              ><span class="text-strong">On Every</span>
+              <span class="toggle" aria-hidden="true"
+                ><i
+                  ><svg><use href="#i-arrow-ur" /></svg></i
+              ></span>
+              <span class="text-soft">Identity</span></span
+            >
+          </h1>
+          <p class="hero-sub">Submit an ID. Track every status. Get a clear result.</p>
+          <div class="cta-row">
+            <a class="btn btn-fill" href="#signin">Start Verifying</a>
+            <a class="btn btn-line" href="#procedures">See How It Works</a>
+          </div>
+
+          <div class="hand" aria-hidden="true">
+            <img src="assets/hand-card.webp" alt="" width="1025" height="1257" fetchpriority="high" />
+            <div class="card-face">
+              <b>TRUSTCHECK</b><svg><use href="#logo" /></svg
+              ><span class="stamp"
+                ><svg><use href="#i-shield" /></svg>Verified</span
+              >
+            </div>
+          </div>
+
+          <div class="dash" role="group" aria-label="Product preview">
+            <article class="dash-card dash-card-tan card-recent" data-reveal>
+              <header>
+                <h2>
+                  Recent Verifications <svg aria-hidden="true"><use href="#i-info" /></svg>
+                </h2>
+                <span class="icons" aria-hidden="true"
+                  ><svg><use href="#i-cal" /></svg><svg><use href="#i-kebab" /></svg
+                ></span>
+              </header>
+              <p class="amount"><span data-count="2316">2,316</span> <small>↑ 6%</small><span>From 41,072</span></p>
+              <div class="segbar" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              <ul class="legend">
+                <li><img class="bank-mark" src="assets/logos/rbc-white.svg" alt="" />RBC<b>31%</b></li>
+                <li><img class="bank-mark" src="assets/logos/td-white.svg" alt="" />TD<b>27%</b></li>
+                <li>
+                  <img class="bank-mark bank-mark-mono" src="assets/logos/scotiabank-s.svg" alt="" />Scotiabank<b
+                    >22%</b
+                  >
+                </li>
+                <li><img class="bank-mark bank-mark-bmo" src="assets/logos/bmo-white.svg" alt="" />BMO<b>20%</b></li>
+              </ul>
+            </article>
+
+            <article class="dash-card dash-card-cream card-status" data-reveal>
+              <header>
+                <h2>Status Overview</h2>
+                <dl class="status-legend">
+                  <div>
+                    <dt><i class="dot-submitted"></i>Submitted</dt>
+                    <dd data-count="842">842</dd>
+                  </div>
+                  <div>
+                    <dt><i class="dot-completed"></i>Completed</dt>
+                    <dd data-count="2107">2,107</dd>
+                  </div>
+                </dl>
+              </header>
+              <svg class="status-chart" viewBox="0 0 290 150" aria-hidden="true">
+                <rect x="136" y="0" width="30" height="128" rx="15" class="column-highlight" />
+                <g class="stems">
+                  <line x1="15" y1="40" x2="15" y2="120" />
+                  <line x1="53" y1="28" x2="53" y2="120" />
+                  <line x1="92" y1="16" x2="92" y2="120" />
+                  <line x1="151" y1="10" x2="151" y2="120" />
+                  <line x1="189" y1="32" x2="189" y2="120" />
+                  <line x1="228" y1="56" x2="228" y2="120" />
+                  <line x1="266" y1="62" x2="266" y2="120" />
+                </g>
+                <g class="tops">
+                  <circle cx="15" cy="36" r="4" />
+                  <circle cx="53" cy="24" r="4" />
+                  <circle cx="92" cy="12" r="4" />
+                  <circle cx="151" cy="6" r="4" />
+                  <circle cx="189" cy="28" r="4" />
+                  <circle cx="228" cy="52" r="4" />
+                  <circle cx="266" cy="58" r="4" />
+                </g>
+                <path
+                  class="line-completed"
+                  pathLength="1"
+                  d="M20 84 C40 84 44 60 60 60 S84 56 96 70 110 94 122 90 140 76 152 84 180 60 200 70 230 58 250 60"
+                />
+                <path
+                  class="line-submitted"
+                  pathLength="1"
+                  d="M20 90 C40 88 44 96 60 94 S84 66 100 64 118 80 132 86 150 88 160 84"
+                />
+                <rect x="158" y="68" width="78" height="46" rx="4" class="chart-tip" />
+                <circle cx="170" cy="83" r="3.2" fill="#d9bfb3" />
+                <text x="180" y="86">Completed</text>
+                <circle cx="170" cy="100" r="3.2" fill="#c49e8d" />
+                <text x="180" y="103">Submitted</text>
+              </svg>
+              <ol class="days" aria-hidden="true">
+                <li>S</li>
+                <li>M</li>
+                <li>T</li>
+                <li class="is-on">W</li>
+                <li>T</li>
+                <li>F</li>
+                <li>S</li>
+              </ol>
+            </article>
+
+            <article class="dash-card dash-card-cream card-rate" data-reveal>
+              <header>
+                <p class="rate-value"><span data-count="96.4" data-decimals="1">96.4</span>%</p>
+                <svg class="download-icon" aria-hidden="true"><use href="#i-cloud" /></svg>
+              </header>
+              <div class="pill-bars" aria-hidden="true">
+                <span style="--a: 60px; --b: 58px"></span><span style="--a: 52px; --b: 66px"></span
+                ><span style="--a: 48px; --b: 70px"></span><span style="--a: 74px; --b: 74px"></span>
+                <span class="is-highlight" style="--a: 62px; --b: 70px"><em>12,450</em></span
+                ><span style="--a: 52px; --b: 52px"></span><span style="--a: 48px; --b: 58px"></span
+                ><span style="--a: 58px; --b: 58px"></span>
+              </div>
+              <ol class="months" aria-hidden="true">
+                <li>Feb</li>
+                <li>Mar</li>
+                <li>Apr</li>
+                <li>May</li>
+                <li>Jun</li>
+                <li>Jul</li>
+                <li>Aug</li>
+                <li>Sep</li>
+              </ol>
+            </article>
+
+            <article class="dash-card dash-card-tan card-map" data-reveal>
+              <header>
+                <h2>Checks Across Canada</h2>
+                <svg aria-hidden="true"><use href="#i-filter" /></svg>
+              </header>
+              <div class="map" aria-hidden="true">
+                <img src="assets/world-dots.svg" alt="" />
+                <svg class="routes" viewBox="0 0 574 334">
+                  <path d="M115 87 C125 110 130 125 138 140M115 87 C170 60 220 70 264 100" />
+                </svg>
+                <span class="flag" style="left: 20%; top: 26%"><img src="assets/flags/ca.svg" alt="" /></span>
+                <span class="flag" style="left: 24%; top: 42%"><img src="assets/flags/us.svg" alt="" /></span>
+                <span class="flag" style="left: 46%; top: 30%"><img src="assets/flags/uk.svg" alt="" /></span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="partners" aria-label="Canadian financial institutions">
+          <ul>
+            <li><img class="logo logo-td" src="assets/logos/td.svg" alt="TD Bank" /></li>
+            <li><img class="logo logo-rbc" src="assets/logos/rbc.svg" alt="RBC" /></li>
+            <li><img class="logo logo-scotiabank" src="assets/logos/scotiabank.svg" alt="Scotiabank" /></li>
+            <li><img class="logo logo-bmo" src="assets/logos/bmo.svg" alt="BMO" /></li>
+            <li><img class="logo logo-vancity" src="assets/logos/vancity.svg" alt="Vancity" /></li>
+            <li><img class="logo logo-coast-capital" src="assets/logos/coast-capital.svg" alt="Coast Capital" /></li>
+            <li><img class="logo logo-tangerine" src="assets/logos/tangerine.svg" alt="Tangerine" /></li>
+            <li><img class="logo logo-wealthsimple" src="assets/logos/wealthsimple.svg" alt="Wealthsimple" /></li>
+          </ul>
+        </section>
+
+        <section class="testimonial" id="reviews" aria-label="Customer reviews">
+          <span class="quote-mark" aria-hidden="true"><i></i><i></i></span>
+          <figure data-reveal>
+            <blockquote>
+              <p id="review-quote">
+                We Onboard Members Across British Columbia In Minutes Now. TrustCheck Gives Every Check A Clear Status,
+                Result And Reason.
+              </p>
+            </blockquote>
+            <figcaption>
+              <span class="review-person"
+                ><span class="avatar avatar-lg" id="review-initials" aria-hidden="true">AT</span
+                ><span
+                  ><b id="review-name">Amelia Tremblay</b
+                  ><small id="review-role">Compliance Lead, Maple Ridge Credit Union</small></span
+                ></span
+              >
+              <span class="review-nav">
+                <button type="button" class="review-prev" aria-label="Previous review">
+                  <svg aria-hidden="true"><use href="#i-arrow-l" /></svg>
+                </button>
+                <span class="review-count" aria-live="polite"><u id="review-index">01</u>/05</span>
+                <button type="button" class="review-next" aria-label="Next review">
+                  <svg aria-hidden="true"><use href="#i-arrow-r" /></svg>
+                </button>
+              </span>
+            </figcaption>
+          </figure>
+        </section>
+
+        <section class="features" id="procedures" aria-labelledby="feat-title">
+          <div class="feat-inner">
+            <i class="blob blob-1" aria-hidden="true"></i><i class="blob blob-2" aria-hidden="true"></i
+            ><i class="blob blob-3" aria-hidden="true"></i><i class="blob blob-4" aria-hidden="true"></i>
+            <h2 id="feat-title" class="feat-title" data-reveal>
+              <span class="text-strong">Handle Your</span><br /><span class="text-strong">KYC Checks</span>
+              <span class="text-soft">Efficiently</span>
+            </h2>
+            <p class="feat-right" data-reveal>
+              Submit a customer’s name, date of birth, address and ID. TrustCheck moves it from Submitted to Verifying
+              to Completed.
+            </p>
+
+            <article class="float-card card-results">
+              <header>
+                <h3>Verification Results</h3>
+                <span class="chart-toggle"
+                  ><span class="is-on"
+                    ><svg aria-hidden="true"><use href="#i-bars" /></svg>Bar chart</span
+                  ><svg aria-hidden="true"><use href="#i-board" /></svg
+                ></span>
+              </header>
+              <div class="stat-bars" aria-hidden="true">
+                <span style="--a: 52px; --b: 52px"></span><span style="--a: 64px; --b: 64px"></span>
+                <span class="is-highlight" style="--a: 86px; --b: 92px"
+                  ><em
+                    ><b>4,812</b><small><i class="swatch-verified"></i>Verified</small
+                    ><small><i class="swatch-rejected"></i>Rejected</small><b>367</b></em
+                  ></span
+                >
+                <span style="--a: 74px; --b: 74px"></span><span style="--a: 60px; --b: 60px"></span>
+              </div>
+              <ol class="months" aria-hidden="true">
+                <li>May</li>
+                <li>Jun</li>
+                <li>Jul</li>
+                <li>Aug</li>
+                <li>Sep</li>
+              </ol>
+            </article>
+
+            <article class="float-card card-signals">
+              <header>
+                <h3>
+                  Match Signals <svg aria-hidden="true"><use href="#i-updown" /></svg>
+                </h3>
+                <span class="icon-button"
+                  ><svg aria-hidden="true"><use href="#i-kebab" /></svg
+                ></span>
+              </header>
+              <svg viewBox="0 -4 300 262" aria-hidden="true">
+                <g class="radar-web">
+                  <polygon points="150,18 245,73 245,183 150,238 55,183 55,73" />
+                  <polygon points="150,46 221,87 221,169 150,210 79,169 79,87" />
+                  <polygon points="150,74 197,101 197,155 150,182 103,155 103,101" />
+                  <path d="M150 18v220M55 73l190 110M245 73 55 183" />
+                </g>
+                <polygon class="radar-area" points="190,39 222,127 176,178 122,187 110,128 150,72" />
+                <g class="radar-points">
+                  <circle cx="190" cy="39" r="2.5" />
+                  <circle cx="222" cy="127" r="2.5" />
+                  <circle cx="176" cy="178" r="2.5" />
+                  <circle cx="122" cy="187" r="2.5" />
+                  <circle cx="110" cy="128" r="2.5" />
+                </g>
+                <g class="radar-labels">
+                  <text x="104" y="12">Name</text>
+                  <text x="196" y="12">DOB</text>
+                  <text x="252" y="132">ID No.</text>
+                  <text x="190" y="252">Address</text>
+                  <text x="100" y="252">Country</text>
+                  <text x="0" y="132">Document</text>
+                </g>
+              </svg>
+              <p class="radar-tip"><small>Jane Doe · Passport</small>5 of 6 signals matched</p>
+            </article>
+
+            <p class="feat-left" data-reveal>
+              Every result is stored with a reason, so your team always knows why a customer was verified or rejected.
+            </p>
+
+            <div class="rating" data-reveal>
+              <p class="rating-title">
+                <svg aria-hidden="true"><use href="#i-star" /></svg>Rated 4.9 by BC teams
+              </p>
+              <p class="rating-stars">
+                <span aria-hidden="true"
+                  ><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg
+                  ><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></span
+                >210+ Reviews
+              </p>
+            </div>
+            <div class="id-types" data-reveal>
+              <span class="id-icons" aria-hidden="true"
+                ><i
+                  ><svg><use href="#i-passport" /></svg></i
+                ><i
+                  ><svg><use href="#i-licence" /></svg></i
+              ></span>
+              <p><b>2</b>ID Types Supported</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="about" id="about" aria-label="About TrustCheck">
+          <ul class="stats">
+            <li data-reveal>
+              <span class="chip"
+                ><svg aria-hidden="true"><use href="#i-people" /></svg>Lifecycle</span
+              ><b><span data-count="3">3</span><sup>stages</sup></b>
+              <p>Submitted, Verifying, Completed. Every Check Follows The Same Path.</p>
+            </li>
+            <li data-reveal>
+              <span class="chip"
+                ><svg aria-hidden="true"><use href="#i-impact" /></svg>Automation</span
+              ><b><span data-count="96">96</span><sup>%</sup></b>
+              <p>Of Checks Reach A Result Without Manual Review.</p>
+            </li>
+            <li data-reveal>
+              <span class="chip"
+                ><svg aria-hidden="true"><use href="#i-cols" /></svg>Transparency</span
+              ><b><span data-count="100">100</span><sup>%</sup></b>
+              <p>Of Results Come With A Reason Your Team Can Audit.</p>
+            </li>
+          </ul>
+
+          <div class="faq-area" id="faq">
+            <img class="faq-dots faq-dots-left" src="assets/dots-white.svg" alt="" />
+            <img class="faq-dots faq-dots-right" src="assets/dots-white.svg" alt="" />
+            <h2 class="faq-title" data-reveal>
+              <span>Know Your Customer,</span><br /><span>Know <em>Your Answers.</em></span>
+            </h2>
+            <p class="faq-sub" data-reveal>What BC teams ask before their first check</p>
+            <div class="faq" data-reveal>
+              <details name="faq" open>
+                <summary>Who is TrustCheck built for?</summary>
+                <p>
+                  Canadian banks, credit unions, fintechs and online services that need to verify customer identities
+                  and keep a record of every result.
+                </p>
+              </details>
+              <details name="faq">
+                <summary>What customer details do I submit?</summary>
+                <p>First and last name, date of birth, address, country, document type and document number.</p>
+              </details>
+              <details name="faq">
+                <summary>Which ID documents are supported?</summary>
+                <p>Passports and driver’s licences. Each check records the document type and number.</p>
+              </details>
+              <details name="faq">
+                <summary>What do the statuses mean?</summary>
+                <p>
+                  Submitted means received. Verifying means TrustCheck is processing it. Completed means a result is
+                  ready.
+                </p>
+              </details>
+              <details name="faq">
+                <summary>Can I see all my verifications in one place?</summary>
+                <p>
+                  Yes. List every verification with its current status, result and reason through the TrustCheck API.
+                </p>
+              </details>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span class="footer-tab" aria-hidden="true"></span>
+        <div class="footer-top" data-reveal>
+          <div class="footer-brand">
+            <a class="brand brand-xl" href="#top"
+              ><svg class="brand-mark" aria-hidden="true"><use href="#logo" /></svg><span>trustcheck</span></a
+            >
+            <p>Identity verification built in British Columbia for Canadian banks and fintechs.</p>
+          </div>
+          <dl class="footer-contact">
+            <div>
+              <dt>Head Office</dt>
+              <dd>220 Seawall Way, Suite 900, Vancouver, BC</dd>
+            </div>
+            <div>
+              <dt>Phone</dt>
+              <dd>+1 (604) 555-0147</dd>
+            </div>
+            <div>
+              <dt>Island Office</dt>
+              <dd>75 Harbour Row, Victoria, BC</dd>
+            </div>
+            <div>
+              <dt>Email</dt>
+              <dd>support@trustcheck.ca</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="footer-mid" data-reveal>
+          <div class="footer-cta">
+            <h2>Ready to run<br />your first check?</h2>
+            <p>Leave your email and our Vancouver team<br />will set up your API access.</p>
+          </div>
+          <form class="signup-form">
+            <label class="visually-hidden" for="email">Email</label>
+            <input id="email" type="email" placeholder="Enter your email" autocomplete="email" />
+            <button type="submit">Join now</button>
+          </form>
+        </div>
+        <p class="watermark" aria-hidden="true" data-text="trustcheck"></p>
+        <div class="footer-bottom">
+          <ul class="social">
+            <li>
+              <a href="#facebook" aria-label="Facebook"
+                ><svg><use href="#i-fb" /></svg
+              ></a>
+            </li>
+            <li>
+              <a href="#twitter" aria-label="Twitter"
+                ><svg><use href="#i-tw" /></svg
+              ></a>
+            </li>
+            <li>
+              <a href="#instagram" aria-label="Instagram"
+                ><svg><use href="#i-ig" /></svg
+              ></a>
+            </li>
+            <li>
+              <a href="#linkedin" aria-label="LinkedIn"
+                ><svg><use href="#i-in" /></svg
+              ></a>
+            </li>
+          </ul>
+          <ul class="legal">
+            <li><a href="#privacy">Privacy Policy</a></li>
+            <li><a href="#terms">Terms &amp; Conditions</a></li>
+            <li><a href="#support">Support</a></li>
+          </ul>
+          <p>© 2026 TrustCheck Inc. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+    <a
+      class="creator"
+      href="https://www.linkedin.com/in/barrybui/"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Built by Barry Bui, LinkedIn (opens in a new tab)"
+    >
+      <img src="assets/logos/linkedin.svg" alt="" width="20" height="20" />
+      <span class="creator-label"
+        ><span>Built by <b>Barry Bui</b></span
+        ><svg class="creator-arrow" aria-hidden="true"><use href="#i-arrow-ur" /></svg
+      ></span>
+      <span class="creator-tip" aria-hidden="true">Connect on LinkedIn</span>
+    </a>
+  </body>
+</html>
