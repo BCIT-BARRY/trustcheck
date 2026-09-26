@@ -30,3 +30,15 @@ jobs:
       - name: Changeset present
         if: github.base_ref == 'dev' && !startsWith(github.head_ref, 'changeset-release/') && !startsWith(github.head_ref, 'dependabot/')
         run: node scripts/bbdevhq-changeset-required.mjs ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+
+  bbdevhq-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Build
+        run: dotnet build trustcheck.sln
+      - name: Test
+        run: dotnet test trustcheck.sln --no-build
