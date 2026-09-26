@@ -1,10 +1,16 @@
 #!/usr/bin/env node
 // Runs `changeset version`, then rewrites its CHANGELOG entry into Keep a Changelog form.
 import { execSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const CHANGELOG = "CHANGELOG.md";
 const HEADINGS = { Major: "Changed", Minor: "Added", Patch: "Fixed" };
+
+const pending = readdirSync(".changeset").filter((file) => file.endsWith(".md") && file !== "README.md");
+if (pending.length === 0) {
+  console.log("No pending changesets; nothing to version.");
+  process.exit(0);
+}
 
 const before = readFileSync(CHANGELOG, "utf8");
 execSync("pnpm exec changeset version", { stdio: "inherit" });
