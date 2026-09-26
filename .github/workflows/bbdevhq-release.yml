@@ -14,7 +14,10 @@ jobs:
   bbdevhq-cut:
     runs-on: ubuntu-latest
     steps:
+      # A bot token push triggers CI on the cut PR; the built-in token needs manual approval.
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BBDEVHQ_BOT_TOKEN || secrets.GITHUB_TOKEN }}
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -25,7 +28,7 @@ jobs:
       # Empty changesets never bump the version; they are consumed by the next real cut.
       - name: Open or update the cut PR
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.BBDEVHQ_BOT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           BEFORE=$(node -p "require('./package.json').version")
           pnpm run version
@@ -61,7 +64,7 @@ jobs:
       # Once a cut lands on dev, keep one PR open that ships that version to main.
       - name: Open or update the ship PR
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.BBDEVHQ_BOT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(node -p "require('./package.json').version")
           if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" > /dev/null; then
