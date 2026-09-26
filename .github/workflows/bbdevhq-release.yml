@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # A bot token push triggers CI on the cut PR; the built-in token needs manual approval.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           token: ${{ secrets.BBDEVHQ_BOT_TOKEN || secrets.GITHUB_TOKEN }}
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -39,8 +39,15 @@ jobs:
           fi
           TITLE="chore(release): cut $VERSION on dev"
           BRANCH=changeset-release/dev
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Authoring as the token owner keeps GitHub from adding a Co-authored-by trailer on squash.
+          if AUTHOR=$(gh api user --jq '"\(.login) \(.id)"' 2>/dev/null); then
+            read -r LOGIN ID <<< "$AUTHOR"
+            git config user.name "$LOGIN"
+            git config user.email "$ID+$LOGIN@users.noreply.github.com"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          fi
           git switch -C "$BRANCH"
           git commit -am "$TITLE"
           git push --force origin "$BRANCH"
@@ -56,8 +63,8 @@ jobs:
     needs: bbdevhq-cut
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
 
