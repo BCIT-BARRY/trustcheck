@@ -1,0 +1,35 @@
+name: bbdevhq-tag
+
+on:
+  push:
+    branches: [main]
+
+concurrency: bbdevhq-tag
+
+permissions:
+  contents: write
+
+jobs:
+  bbdevhq-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Read version
+        id: version
+        run: echo "value=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Tag and publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" > /dev/null; then
+            echo "Tag $VERSION already exists; nothing to release."
+            exit 0
+          fi
+          node scripts/bbdevhq-release-notes.mjs "$VERSION" > release-notes.md
+          gh release create "$VERSION" --target "$GITHUB_SHA" --title "$VERSION" --notes-file release-notes.md
