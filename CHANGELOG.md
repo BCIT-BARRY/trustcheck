@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-09-26
+
+### Fixed
+
+- Release pull request bodies are covered by tests.
+
 ## [0.2.0] - 2026-09-26
 
 ### Added
