@@ -63,3 +63,9 @@ test("unknown version fails", () => {
   assert.equal(status, 1);
   assert.match(stderr, /No CHANGELOG section for 9\.9\.9/);
 });
+
+test("body ends with the bbdevhq footer without a policy link", () => {
+  const { stdout } = prBody("cut", "0.3.0");
+  assert.match(stdout.trimEnd(), /> Operated by bbdevhq © 2026 · Mandated by bbdevhq-policy$/);
+  assert.doesNotMatch(stdout, /\]\(.*bbdevhq-policy/);
+});
