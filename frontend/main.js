@@ -80,5 +80,13 @@ function toInitials(fullName) {
 
 // Static demo page: there is no signup backend yet, so keep the visitor on the page.
 function initSignupForm() {
-  document.querySelector(".signup-form").addEventListener("submit", (event) => event.preventDefault());
+  const form = document.querySelector(".signup-form");
+  const email = document.getElementById("email");
+  const status = document.querySelector(".signup-status");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    status.textContent = `Thanks. We will contact ${email.value.trim()} soon.`;
+    form.reset();
+  });
 }
