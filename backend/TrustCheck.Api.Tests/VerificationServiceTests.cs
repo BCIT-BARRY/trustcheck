@@ -70,6 +70,105 @@ public class VerificationServiceTests
         await Assert.ThrowsAsync<ArgumentException>(() => _service.CreateAsync(request));
     }
 
+    [Theory]
+    [InlineData("FirstName")]
+    [InlineData("LastName")]
+    [InlineData("Address")]
+    [InlineData("Country")]
+    [InlineData("DocumentNumber")]
+    public async Task CreateAsync_MissingRequiredField_Throws(string field)
+    {
+        var request = ValidRequest();
+
+        switch (field)
+        {
+            case "FirstName":
+                request.FirstName = "";
+                break;
+            case "LastName":
+                request.LastName = "";
+                break;
+            case "Address":
+                request.Address = "";
+                break;
+            case "Country":
+                request.Country = "";
+                break;
+            case "DocumentNumber":
+                request.DocumentNumber = "";
+                break;
+        }
+
+        await Assert.ThrowsAsync<ArgumentException>(() => _service.CreateAsync(request));
+    }
+
+    [Fact]
+    public async Task CreateAsync_DateOfBirthBefore1900_Throws()
+    {
+        var request = ValidRequest();
+        request.DateOfBirth = new DateOnly(1899, 12, 31);
+
+        await Assert.ThrowsAsync<ArgumentException>(() => _service.CreateAsync(request));
+    }
+
+    [Fact]
+    public async Task CreateAsync_NameAtMaxLength_IsAccepted()
+    {
+        var request = ValidRequest();
+        request.FirstName = new string('a', VerificationService.MaxNameLength);
+
+        var verification = await _service.CreateAsync(request);
+
+        Assert.Equal(VerificationService.MaxNameLength, verification.FirstName.Length);
+    }
+
+    [Fact]
+    public async Task CreateAsync_NameTooLong_Throws()
+    {
+        var request = ValidRequest();
+        request.LastName = new string('a', VerificationService.MaxNameLength + 1);
+
+        await Assert.ThrowsAsync<ArgumentException>(() => _service.CreateAsync(request));
+    }
+
+    [Fact]
+    public async Task CreateAsync_AddressTooLong_Throws()
+    {
+        var request = ValidRequest();
+        request.Address = new string('a', VerificationService.MaxAddressLength + 1);
+
+        await Assert.ThrowsAsync<ArgumentException>(() => _service.CreateAsync(request));
+    }
+
+    [Fact]
+    public async Task CreateAsync_CountryTooLong_Throws()
+    {
+        var request = ValidRequest();
+        request.Country = new string('a', VerificationService.MaxCountryLength + 1);
+
+        await Assert.ThrowsAsync<ArgumentException>(() => _service.CreateAsync(request));
+    }
+
+    [Fact]
+    public async Task CreateAsync_DocumentNumberTooLong_Throws()
+    {
+        var request = ValidRequest();
+        request.DocumentNumber = new string('1', VerificationService.MaxDocumentNumberLength + 1);
+
+        await Assert.ThrowsAsync<ArgumentException>(() => _service.CreateAsync(request));
+    }
+
+    [Fact]
+    public async Task CreateAsync_SpacesDoNotCountTowardLength()
+    {
+        var request = ValidRequest();
+        request.Country = "  " + new string('a', VerificationService.MaxCountryLength) + "  ";
+
+        var verification = await _service.CreateAsync(request);
+
+        Assert.Equal(VerificationService.MaxCountryLength, verification.Country.Length);
+    }
+
     [Fact]
     public async Task CreateAsync_FutureDateOfBirth_Throws()
     {
