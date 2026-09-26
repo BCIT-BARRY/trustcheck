@@ -28,5 +28,5 @@ jobs:
         run: pnpm test
 
       - name: Changeset present
-        if: github.base_ref == 'dev' && !startsWith(github.head_ref, 'changeset-release/')
+        if: github.base_ref == 'dev' && !startsWith(github.head_ref, 'changeset-release/') && !startsWith(github.head_ref, 'dependabot/')
         run: node scripts/bbdevhq-changeset-required.mjs ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
